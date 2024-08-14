@@ -7,7 +7,6 @@
 *.code-workspace
 /DOCTECH-BE/DOCTECH-TEXT_EXTRATION-SERVICE/files
 /DOCTECH-BE/DOCTECH-TEXT_EXTRATION-SERVICE/__pycache__
-/DOCTECH-BE/DOCTECH-TEXT_EXTRATION-SERVICE/json_files/
 
 ## DOCTECH-UPLOAD-SERVICE
 /DOCUTECH/DOCTECH-FE/DOCTECH-UPLOAD-SERVICE/node_modules
@@ -49,12 +48,6 @@ dist/
 # Ignore log files
 *.log
 
-# Ignore Docker-related files
-docker-compose.yml
-Dockerfile
-
-# Ignore yarn lock files
-yarn.lock
 
 # DOCTECT-MODEL
 D:\DOCUTECH\DOCTECH-MODEL\env

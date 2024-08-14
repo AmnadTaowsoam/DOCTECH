@@ -1,0 +1,108 @@
+version: '3.8'
+
+services:
+  ############# Label Studio #################
+  label-studio:
+    image: heartexlabs/label-studio:latest
+    ports:
+      - "8080:8080"
+    networks:
+      - doctech-net
+    env_file:
+      - .env
+    volumes:
+      - label-studio-data:/label-studio/data
+      - ./json_files:/json_files  # Mount the JSON files directory
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8080 || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    restart: unless-stopped  # More resilient restart policy
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+
+  ############# pgAdmin #################
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
+    ports:
+      - "${PGADMIN_PORT}:80"
+    networks:
+      - doctech-net
+    restart: unless-stopped  # More resilient restart policy
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+
+  ############# Microservice-Service #################
+  text_extract-service:
+    build: ./DOCTECH-TEXT_EXTRATION-SERVICE
+    depends_on:
+      - text_extract-db  # Ensure database is up before starting
+    env_file:
+      - .env
+    ports:
+      - "${TEXT_EXTRACT_SERVICE_PORT}:8000"
+    networks:
+      - doctech-net
+    volumes:
+      - ./json_files:/json_files  # Mount the JSON files directory
+      - ./files:/files # Mount the upload directory for saved files
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 500M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "200k"
+        max-file: "10"
+    restart: unless-stopped  # More resilient restart policy
+
+  ############# PostgreSQL Database #################
+  text_extract-db:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: ${TEXT_EXTRACT_DB_NAME}
+      POSTGRES_USER: ${TEXT_EXTRACT_DB_USERNAME}
+      POSTGRES_PASSWORD: ${TEXT_EXTRACT_DB_PASSWORD}
+    volumes:
+      - text_extract_volume-data:/var/lib/postgresql/data
+      - ./db/init/text_extract.sql:/docker-entrypoint-initdb.d/text_extract.sql
+    ports:
+      - "${TEXT_EXTRACT_DB_PORT}:5432"
+    networks:
+      - doctech-net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${TEXT_EXTRACT_DB_USERNAME} -d ${TEXT_EXTRACT_DB_NAME}"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    restart: unless-stopped  # More resilient restart policy
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 1G
+
+networks:
+  doctech-net:
+    driver: bridge
+
+volumes:
+  text_extract_volume-data:
+    driver: local
+  label-studio-data:
+    driver: local
