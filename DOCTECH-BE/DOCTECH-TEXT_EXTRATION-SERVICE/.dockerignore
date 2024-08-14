@@ -1,0 +1,15 @@
+# Ignore Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Ignore virtual environment directories
+venv/
+.venv/
+
+# Ignore other development artifacts
+.DS_Store
+*.log
+
+# Ignore the .env file for security reasons (unless it's needed in the container)
+.env

@@ -1,0 +1,61 @@
+## data
+/DOCTECH-BE/data/
+
+## DOCTECH-TEXT_EXTRACTION-SERVICE
+/DOCTECH-BE/DOCTECH-TEXT_EXTRATION-SERVICE/venv
+*.ipynb
+*.code-workspace
+/DOCTECH-BE/DOCTECH-TEXT_EXTRATION-SERVICE/files
+/DOCTECH-BE/DOCTECH-TEXT_EXTRATION-SERVICE/__pycache__
+/DOCTECH-BE/DOCTECH-TEXT_EXTRATION-SERVICE/json_files/
+
+## DOCTECH-UPLOAD-SERVICE
+/DOCUTECH/DOCTECH-FE/DOCTECH-UPLOAD-SERVICE/node_modules
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Ignore node modules
+node_modules/
+
+# Ignore build files
+build/
+dist/
+
+# Ignore environment variables
+.env
+
+# Ignore log files
+*.log
+
+# Ignore Docker-related files
+docker-compose.yml
+Dockerfile
+
+# Ignore yarn lock files
+yarn.lock
+
+# DOCTECT-MODEL
+D:\DOCUTECH\DOCTECH-MODEL\env
+
